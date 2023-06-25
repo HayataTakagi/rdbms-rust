@@ -63,3 +63,24 @@ impl DisManeger {
         self.heap_file.read_exact(data)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use std::io::Read;
+
+    use crate::disk::DisManeger;
+
+    #[test]
+    fn open_ファイルが開けること() {
+        let test_file_path = "src/tests/sample.txt";
+        let dm_reslt = DisManeger::open(test_file_path);
+
+        assert_eq!(dm_reslt.is_ok(), true);
+        let mut dm = dm_reslt.unwrap();
+
+        let mut buf = String::new();
+        let _ = dm.heap_file.read_to_string(&mut buf);
+
+        assert_eq!(buf, "123");
+    }
+}
